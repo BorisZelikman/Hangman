@@ -1,3 +1,3 @@
 export default function Letter (props){
-    return <span className="badge badge-primary">{props.char}</span>
+    return <span onClick={()=>props.onCheck(props.char)} >{props.char}</span>
 }
