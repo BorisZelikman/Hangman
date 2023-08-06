@@ -1,3 +1,7 @@
 export default function Letter (props){
-    return <span onClick={()=>props.onCheck(props.char)} >{props.char}</span>
+    const letterStyle=props.isChecked?"checkedLetter":"letter";
+    const clickEvent=props.isChecked?
+        ()=>console.log(props.char+" is checked"):
+        ()=>props.onCheck(props.char);
+    return <span  className={letterStyle} onClick={clickEvent} >{props.char}</span>
 }

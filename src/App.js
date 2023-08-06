@@ -18,7 +18,7 @@ function App() {
 
   const [currentValues, setCurrentValues] = useState({
     score: 100,
-    wordIndex: 0,
+    wordIndex: 1,
     currentWord: data[0],
     checkedLetters: [],
   });
@@ -30,14 +30,22 @@ function App() {
       .some((l) => l === letter);
 
   const addLetter = (letter) => {
-    let newValue = { ...currentValues };
-    newValue.checkedLetters.push(letter);
-    newValue.score -= isCorrect(letter) ? 0 : 20;
-    setCurrentValues(newValue);
+    if (currentValues.score > 0 && !isDone()) {
+      let newValue = { ...currentValues };
+      newValue.checkedLetters.push(letter);
+      newValue.score -= isCorrect(letter) ? 0 : 20;
+      setCurrentValues(newValue);
+    }
+    if (isDone()) alert("DONE");
   };
 
+  const isDone = () => {
+    const wordChars = currentValues.currentWord.word.toUpperCase().split("");
+    const checkedChars = currentValues.checkedLetters;
+    return wordChars.every((c) => checkedChars.indexOf(c) >= 0);
+  };
   return (
-    <>
+    <div className="App">
       <Score value={currentValues.score} />
       <GuessWord
         word={currentValues.currentWord.word}
@@ -45,7 +53,7 @@ function App() {
       />
       <Question text={currentValues.currentWord.question} />
       <Letters onCheck={addLetter} checked={currentValues.checkedLetters} />
-    </>
+    </div>
   );
 }
 

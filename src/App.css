@@ -1,5 +1,4 @@
-.App {
-  text-align: center;
+body {
   background-color: #282c34;
 }
 
@@ -13,15 +12,30 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
-.score {
-  background-color: red;
+.score,
+.question {
+  margin: 20px;
 }
+span {
+  margin: 2px;
+  padding: 5px;
+  border-style: solid;
+  border-radius: 2px;
+  display: inline;
+}
+
+.letter {
+  cursor: pointer;
+}
+.checkedLetter {
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
 .App {
+  text-align: center;
   background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);

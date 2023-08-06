@@ -1,3 +1,3 @@
 export default function Question(props){
-    return <div>{props.text}</div>
+    return <div className="question">{props.text}</div>
 }
