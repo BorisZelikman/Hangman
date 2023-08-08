@@ -1,58 +1,53 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Score from "./components/Score";
 import Letters from "./components/Letters";
-import GuessWord from "./components/GuessWord";
-import Question from "./components/Question";
+import Solution from "./components/Solution";
 import { useState } from "react";
+import EndGame from "./components/EndGame";
 
 function App() {
-  const data = [
-    { word: "winter", question: "the cold season between autumn and spring" },
-    {
-      word: "apple",
-      question:
-        "the usually round, red or yellow, edible fruit of a small tree",
-    },
-  ];
-
-  const [currentValues, setCurrentValues] = useState({
-    score: 100,
-    wordIndex: 1,
-    currentWord: data[0],
-    checkedLetters: [],
-  });
-
-  const isCorrect = (letter) =>
-    currentValues.currentWord.word
-      .toUpperCase()
-      .split("")
-      .some((l) => l === letter);
-
-  const addLetter = (letter) => {
-    if (currentValues.score > 0 && !isDone()) {
-      let newValue = { ...currentValues };
-      newValue.checkedLetters.push(letter);
-      newValue.score -= isCorrect(letter) ? 0 : 20;
-      setCurrentValues(newValue);
-    }
-    if (isDone()) alert("DONE");
+  const generateLetterStatus = () => {
+    let letterStatus = {};
+    for (let i = "A".charCodeAt(0); i <= "Z".charCodeAt(0); i++)
+      letterStatus[String.fromCharCode(i)] = false;
+    return letterStatus;
   };
 
-  const isDone = () => {
-    const wordChars = currentValues.currentWord.word.toUpperCase().split("");
-    const checkedChars = currentValues.checkedLetters;
-    return wordChars.every((c) => checkedChars.indexOf(c) >= 0);
+  const [letterStatus, setLetterStatus] = useState(generateLetterStatus());
+  const [solution, setSolution] = useState({
+    word: "apple",
+    hint: "the usually round, red or yellow, edible fruit of a small tree",
+  });
+  const [score, setScore] = useState(100);
+
+  let disabledSelectingLetters = false;
+  const selectLetter = (char) => {
+    if (disabledSelectingLetters) return;
+    setLetterStatus({ ...letterStatus, [char]: true });
+    const deltaScore = () =>
+      solution.word.toUpperCase().indexOf(char) === -1 ? -20 : 5;
+    setScore(score + deltaScore());
+  };
+
+  const isFinished = () => {
+    const wordChars = solution.word.toUpperCase().split("");
+    const checkedChars = Object.keys(letterStatus).filter(
+      (c) => letterStatus[c] === true
+    );
+    const win = wordChars.every((c) => checkedChars.indexOf(c) >= 0);
+    const fail = score <= 0;
+    disabledSelectingLetters = win || fail;
+    return {
+      result: win ? "win" : fail ? "fail" : "in progress",
+      word: solution.word,
+    };
   };
   return (
     <div className="App">
-      <Score value={currentValues.score} />
-      <GuessWord
-        word={currentValues.currentWord.word}
-        checked={currentValues.checkedLetters}
-      />
-      <Question text={currentValues.currentWord.question} />
-      <Letters onCheck={addLetter} checked={currentValues.checkedLetters} />
+      <Score value={score} />
+      <Solution solution={solution} letterStatus={letterStatus}></Solution>
+      <Letters letterStatus={letterStatus} selectLetter={selectLetter} />
+      <EndGame finishedResult={isFinished()} />
     </div>
   );
 }

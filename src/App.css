@@ -12,9 +12,24 @@ body {
     animation: App-logo-spin infinite 20s linear;
   }
 }
-.score,
+.win,
+.fail,
+.high-score,
+.medium-score,
+.low-score,
 .question {
   margin: 20px;
+}
+.win,
+.high-score {
+  color: lightgreen;
+}
+.medium-score {
+  color: yellow;
+}
+.fail,
+.low-score {
+  color: red;
 }
 span {
   margin: 2px;
@@ -30,6 +45,7 @@ span {
 .checkedLetter {
   cursor: not-allowed;
   text-decoration: line-through;
+  opacity: 0.5;
 }
 
 .App {

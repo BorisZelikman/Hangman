@@ -1,12 +1,11 @@
 import Letter from "./Letter";
 
 export default function Letters(props){
-  const chars=[];
-  for (let i="A".charCodeAt(0); i<="Z".charCodeAt(0); i++) chars.push(String.fromCharCode(i));
-  
-  return (
+    const chars=Object.keys(props.letterStatus);
+    const checked= (char)=>props.letterStatus[char]?"checkedLetter":"letter";
+    return (
     <div className="letters">
-        {chars.map(c=><Letter key={c} char={c} isChecked ={props.checked.some(a=>a===c)} onCheck={props.onCheck}/>)}
+         {chars.map(c=><Letter checked={checked(c)} key={c} char={c} selectLetter={props.selectLetter}/>)} 
     </div>
   )  
 }
