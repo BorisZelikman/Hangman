@@ -6,7 +6,7 @@ function EndGame(props) {
         const text= result==="win"?"Congratulations":`Game Over! The word was "${word}"`;
         return (<> 
         <div className={result}>{text}</div>
-        <button>Restart</button>
+        <button onClick={()=>props.restart()}>Restart</button>
         </>)    
     }
  }
